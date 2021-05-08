@@ -15,6 +15,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _authService = AuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    _authService.showLogin();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -32,12 +39,16 @@ class _MyAppState extends State<MyApp> {
                   // 4
                   // Show Login Page
                   if (snapshot.data.authFlowStatus == AuthFlowStatus.login)
-                    MaterialPage(child: LoginPage()),
+                    MaterialPage(
+                        child: LoginPage(
+                            shouldShowSignUp: _authService.showSignUp)),
 
                   // 5
                   // Show Sign Up Page
                   if (snapshot.data.authFlowStatus == AuthFlowStatus.signUp)
-                    MaterialPage(child: SignUpPage())
+                    MaterialPage(
+                        child:
+                            SignUpPage(shouldShowLogin: _authService.showLogin))
                 ],
                 onPopPage: (route, result) => route.didPop(result),
               );
